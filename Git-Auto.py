@@ -2,26 +2,27 @@ import subprocess
 import datetime
 import os
 
-# 1. Change to your Git project directory
-repo_path = r"D:\Git-Auto"  # 🔁 Replace with your actual repo path
+repo_path = r"D:\Git-Auto"
 os.chdir(repo_path)
 
-# 2. Generate dynamic commit message with current date/time
-commit_msg = f"Auto commit on {datetime.datetime.now()}"
+commit_msg = f"Auto commit on {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+log_file = os.path.join(repo_path, "git_auto_log.txt")
 
-# 3. Run Git commands safely using subprocess
+def log(message):
+    with open(log_file, "a") as f:
+        f.write(f"{datetime.datetime.now()}: {message}\n")
+
 try:
-    subprocess.run(["git", "add", "."], check=True)
-    subprocess.run(["git", "commit", "-m", commit_msg], check=True)
-    subprocess.run(["git", "push"], check=True)
+    subprocess.run([r"C:\Program Files\Git\bin\git.exe", "add", "."], check=True)
+    subprocess.run([r"C:\Program Files\Git\bin\git.exe", "commit", "-m", commit_msg], check=True)
+    subprocess.run([r"C:\Program Files\Git\bin\git.exe", "push"], check=True)
 
-    result = subprocess.run(["git", "status"], capture_output=True, text=True)
-    print("Git Status Output:\n", result.stdout)
+    result = subprocess.run([r"C:\Program Files\Git\bin\git.exe", "status"], capture_output=True, text=True)
+    log("Git Status Output:\n" + result.stdout)
 
 except subprocess.CalledProcessError as e:
-    print("Error occurred while running Git command:")
-    print(e)
+    log("Error occurred while running Git command:\n" + str(e))
 except FileNotFoundError:
-    print("Command not found!")
+    log("Command not found!")
 except Exception as e:
-    print("Some other error:",e)
+    log("Some other error: " + str(e))
