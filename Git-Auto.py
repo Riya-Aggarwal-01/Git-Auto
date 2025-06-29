@@ -13,11 +13,11 @@ def log(message):
         f.write(f"{datetime.datetime.now()}: {message}\n")
 
 try:
-    subprocess.run([r"C:\Program Files\Git\bin\git.exe", "add", "."], check=True)
-    subprocess.run([r"C:\Program Files\Git\bin\git.exe", "commit", "-m", commit_msg], check=True)
-    subprocess.run([r"C:\Program Files\Git\bin\git.exe", "push"], check=True)
+    subprocess.run(["git", "add", "."], check=True)
+    subprocess.run(["git", "commit", "-m", commit_msg], check=True)
+    subprocess.run(["git", "push"], check=True)
 
-    result = subprocess.run([r"C:\Program Files\Git\bin\git.exe", "status"], capture_output=True, text=True)
+    result = subprocess.run(["git", "status"], capture_output=True, text=True)
     log("Git Status Output:\n" + result.stdout)
 
 except subprocess.CalledProcessError as e:
